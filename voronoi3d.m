@@ -67,12 +67,21 @@ IDX3D = IDX3Dn;
 volume_per_pixel = (max(X(:) - min(X(:))))*(max(Y(:) - min(Y(:))))*(max(Z(:) - min(Z(:))))/nPoints3d^3;
 volumes = zeros(1, length(points(1,:)));
 for i=1:length(points(1,:))
-    volumes(i) = sum(IDX3D(:) == i)*volume_per_pixel;
+    IDX3D2 = IDX3D == i;
+    %IDX2D2 = reshape(IDX3D2, nPoints3d, nPoints3d, nPoints3d);
+    bottom = IDX3D2(:,:,1); 
+    top = IDX3D2(:,:,end); 
+    [rowb, colb] = find(bottom);
+    [rowt, colt] = find(top);
+    all = [rowb, colb, rowt, colt];
+    if isempty(all)
+        volumes(i) = sum(IDX3D(:) == i)*volume_per_pixel;
+    end
 end
-f3 = figure;
-boxplot(volumes)
-title('Box plot of volumes')
-ylabel('Volume (um^3)') 
+% f3 = figure;
+% boxplot(volumes)
+% title('Box plot of volumes')
+% ylabel('Volume (um^3)') 
 
 f1=figure;
 subplot(1,2,1)
@@ -164,6 +173,8 @@ for i=1:nPoints3d
         r = (xvec(1)/ellipse.a)^2 + (xvec(2)/ellipse.b)^2; 
         if r > 1
             IDX3D(i,j,:) = 0;
+            dist3D(i,j,:) = NaN;
+            
         end
     end
 end
@@ -190,8 +201,10 @@ lighting phong
 voro3d = {};
 voro3d.volumes = volumes; 
 voro3d.slices = f1;
-voro3d.volume_box_plot = f3; 
+voro3d.volume_box_plot = 0; 
 voro3d.fancy = f2;
+voro3d.IDX3D = IDX3D; 
+voro3d.dist3d = dist3D;
 
 
 

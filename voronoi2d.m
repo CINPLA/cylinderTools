@@ -50,12 +50,12 @@ for i=min(min(IDX)):max(max(IDX))
 end
 
 f2 = figure;
-f = boxplot(histlist);
-%histogram(histlist, 'Normalization', 'probability')
-title('Domain area distribution (um x um)')
-%xlabel('Surface area (um x um)')
-ylabel('Probability')
-histlist;
+% f = boxplot(histlist);
+% %histogram(histlist, 'Normalization', 'probability')
+% title('Domain area distribution (um x um)')
+% %xlabel('Surface area (um x um)')
+% ylabel('Probability')
+% histlist;
 
 
 % IDX2(1,:) = 100; 
@@ -85,5 +85,6 @@ f.areahist = f2;
 f.dist = f3; 
 f.disthist = f4; 
 f.arealist = histlist;
+f.all_dist = dist(:);
 end
 
